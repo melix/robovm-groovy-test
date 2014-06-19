@@ -1,0 +1,35 @@
+apply plugin: 'idea'
+apply plugin: 'groovy'
+
+version = '0.1-SNAPSHOT'
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    robovm
+}
+
+dependencies {
+    robovm  'org.codehaus.groovy:groovy:2.4.0-beta-1:grooid'
+    compile 'org.codehaus.groovy:groovy:2.4.0-beta-1'
+}
+
+ext.robovmHome=System.getenv('ROBOVM_HOME')
+if (!robovmHome) {
+    throw new GradleException("Please set the ROBOVM_HOME environment variable")
+}
+
+task robovm(type: Exec) {
+    dependsOn jar
+    commandLine = ["$robovmHome/bin/robovm"]
+    args += '-debug'
+    args += ['-cp', (files(sourceSets.main.output.classesDir)+configurations.robovm).asPath]
+    args += ['-d', "${buildDir}/bin"]
+    args += ['-o', project.name]
+    args += ['-run', 'HelloWorld']
+    doFirst {
+        logger.lifecycle "Executing $commandLine"
+    }
+}
