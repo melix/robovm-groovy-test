@@ -3,11 +3,13 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class HelloWorld {
     public static void main(String[] args) {
-        println 'Hello, world!'
+        System.out.println('Hello, world!')
+//        println 'Hello, world!'
     }
 }
 
-// fails with
+// System.out.println('Hello, world!')  -- works!
+// println 'Hello, world!'  -- fails with:
 // Exception in thread "main" java.lang.ExceptionInInitializerError
 // 	at org.codehaus.groovy.runtime.InvokerHelper.<clinit>(InvokerHelper.java)
 // 	at org.codehaus.groovy.runtime.DefaultGroovyMethods.println(DefaultGroovyMethods.java)

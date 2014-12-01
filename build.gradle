@@ -12,8 +12,8 @@ configurations {
 }
 
 dependencies {
-    robovm  'org.codehaus.groovy:groovy:2.4.0-beta-1:grooid'
-    compile 'org.codehaus.groovy:groovy:2.4.0-beta-1'
+    robovm  'org.codehaus.groovy:groovy:2.4.0-beta-4:grooid'
+    compile 'org.codehaus.groovy:groovy:2.4.0-beta-4'
 }
 
 ext.robovmHome=System.getenv('ROBOVM_HOME')
