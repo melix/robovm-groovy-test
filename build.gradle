@@ -21,14 +21,24 @@ if (!robovmHome) {
     throw new GradleException("Please set the ROBOVM_HOME environment variable")
 }
 
-task robovm(type: Exec) {
+List<String> sharedArgs = ['-debug'] +
+    ['-cp', (files(sourceSets.main.output.classesDir)+configurations.robovm).asPath] +
+    ['-d', "${buildDir}/bin"] +
+    ['-o', project.name]
+
+task roboRun(type: Exec) {
     dependsOn jar
     commandLine = ["$robovmHome/bin/robovm"]
-    args += '-debug'
-    args += ['-cp', (files(sourceSets.main.output.classesDir)+configurations.robovm).asPath]
-    args += ['-d', "${buildDir}/bin"]
-    args += ['-o', project.name]
-    args += ['-run', 'HelloWorld']
+    args += sharedArgs + ['-run', 'HelloWorld']
+    doFirst {
+        logger.lifecycle "Executing $commandLine"
+    }
+}
+
+task roboBuild(type: Exec) {
+    dependsOn jar
+    commandLine = ["$robovmHome/bin/robovm"]
+    args += sharedArgs + ['HelloWorld']
     doFirst {
         logger.lifecycle "Executing $commandLine"
     }
