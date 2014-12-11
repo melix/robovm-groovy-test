@@ -16,6 +16,10 @@ dependencies {
     compile 'org.codehaus.groovy:groovy:2.4.0-beta-4'
 }
 
+tasks.withType(GroovyCompile) {
+   groovyOptions.configurationScript = file('config.groovy')
+}
+
 ext.robovmHome=System.getenv('ROBOVM_HOME')
 if (!robovmHome) {
     throw new GradleException("Please set the ROBOVM_HOME environment variable")
@@ -25,6 +29,8 @@ task robovm(type: Exec) {
     dependsOn jar
     commandLine = ["$robovmHome/bin/robovm"]
     args += '-debug'
+    args += ['-cache', file("$buildDir/cache")]
+    //args += ['-forcelinkclasses', 'java.lang.ClassValue']
     args += ['-cp', (files(sourceSets.main.output.classesDir)+configurations.robovm).asPath]
     args += ['-d', "${buildDir}/bin"]
     args += ['-o', project.name]
